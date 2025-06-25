@@ -16,7 +16,7 @@ export default function OAuth() {
       const result = await signInWithPopup(auth, provider);
 
       // ✅ Use your actual backend URL and credentials
-      const res = await fetch('http://localhost:3456/api/auth/google', {
+      const res = await fetch('https://realestate-xqt1.onrender.com/api/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

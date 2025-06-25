@@ -133,7 +133,7 @@ const handleSubmit = async (e) => {
     setLoading(true);
     setError(false);
 
-    const res = await fetch('http://localhost:3456/api/listing/create', {
+    const res = await fetch('https://realestate-xqt1.onrender.com/api/listing/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
