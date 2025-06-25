@@ -26,7 +26,7 @@ export default function CreateListing() {
     offer: false,
     parking: false,
     furnished: false,
-    email:true,
+    email:localStorage.getItem('LoggedinMail'),
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);

@@ -36,6 +36,7 @@ export default function SignIn() {
         dispatch(signInFailure(data.message));
         return;
       }
+      localStorage.setItem('LoggedinMail', data.email);
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {

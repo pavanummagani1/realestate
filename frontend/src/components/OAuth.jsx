@@ -15,13 +15,12 @@ export default function OAuth() {
 
       const result = await signInWithPopup(auth, provider);
 
-      // ✅ Use your actual backend URL and credentials
       const res = await fetch('https://realestate-xqt1.onrender.com/api/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // needed if you're using cookies
+        credentials: 'include',
         body: JSON.stringify({
           name: result.user.displayName,
           email: result.user.email,
@@ -30,11 +29,15 @@ export default function OAuth() {
       });
 
       if (!res.ok) {
-        const message = await res.text(); // Try to read the error response
+        const message = await res.text();
         throw new Error(`Request failed: ${res.status} - ${message}`);
       }
 
       const data = await res.json();
+
+      // ✅ Store email in localStorage
+      localStorage.setItem('LoggedinMail', result.user.email);
+
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
