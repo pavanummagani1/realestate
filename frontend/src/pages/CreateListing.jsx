@@ -143,8 +143,6 @@ const handleSubmit = async (e) => {
       credentials: 'include',
       body: JSON.stringify({
         ...formData,
-        userRef: currentUser._id,
-        email: currentUser.email
       }),
     });
 
