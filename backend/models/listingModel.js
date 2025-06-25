@@ -14,6 +14,10 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     regularPrice: {
       type: Number,
       required: true,
@@ -58,6 +62,7 @@ const listingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Listing = mongoose.model('Listing', listingSchema)|| mongoose.model('listings', listingSchema);
+const Listing =
+  mongoose.models.Listing || mongoose.model('Listing', listingSchema);
 
 export default Listing;

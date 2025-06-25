@@ -130,6 +130,7 @@ const handleSubmit = async (e) => {
       return setError('You must upload at least one image');
     if (+formData.regularPrice < +formData.discountPrice)
       return setError('Discount price must be lower than regular price');
+
     setLoading(true);
     setError(false);
 
@@ -142,6 +143,7 @@ const handleSubmit = async (e) => {
       body: JSON.stringify({
         ...formData,
         userRef: currentUser._id,
+        email: currentUser.email
       }),
     });
 
