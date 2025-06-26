@@ -19,7 +19,6 @@ import {
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const BASE_API = import.meta.env.VITE_BASE_API;
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -124,11 +123,12 @@ export default function Profile() {
   };
 
   const handleShowListings = async () => {
-    console.log(currentUser)
+    let email = localStorage.getItem('LoggedinMail');
     try {
       setShowListingsError(false);
-      const res = await fetch(`http://localhost:3456/api/user/listings/${currentUser.email}`);
+      const res = await fetch(`http://localhost:3456/api/user/listings/${email}`);
       const data = await res.json();
+      console.log(data)
       if (data.success === false) {
         setShowListingsError(true);
         return;
@@ -144,6 +144,10 @@ export default function Profile() {
     try {
       const res = await fetch(`http://localhost:3456/api/listing/delete/${listingId}`, {
         method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       const data = await res.json();
       if (data.success === false) {

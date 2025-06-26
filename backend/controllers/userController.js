@@ -13,7 +13,7 @@ export const updateUser = async (req, res, next) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+      id,
       {
         $set: {
           username: req.body.username,
@@ -46,10 +46,9 @@ export const deleteUser = async (req, res, next) => {
 
 export const getUserListings = async (req, res, next) => {
   console.log(req.params)
-  const {id} = req.params;
+  const email = req.params.id
     try {
-      const listings = await Listing.find({id});
-       console.log(listings)
+      const listings = await Listing.find({email});
       res.status(200).json(listings);
     } catch (error) {
       next(error);
