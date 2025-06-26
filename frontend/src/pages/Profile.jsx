@@ -18,6 +18,9 @@ import {
 } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+const BASE_API = import.meta.env.VITE_BASE_API;
+
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -29,12 +32,6 @@ export default function Profile() {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
-
-  // firebase storage
-  // allow read;
-  // allow write: if
-  // request.resource.size < 2 * 1024 * 1024 &&
-  // request.resource.contentType.matches('image/.*')
 
   useEffect(() => {
     if (file) {
@@ -55,7 +52,7 @@ export default function Profile() {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setFilePerc(Math.round(progress));
       },
-      (error) => {
+      () => {
         setFileUploadError(true);
       },
       () => {
@@ -114,7 +111,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch('https://realestate-xqt1.onrender.com/api/auth/signout');
+      const res = await fetch(`http://localhost:3456/api/auth/signout`);
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
@@ -122,14 +119,15 @@ export default function Profile() {
       }
       dispatch(deleteUserSuccess(data));
     } catch (error) {
-      dispatch(deleteUserFailure(data.message));
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
   const handleShowListings = async () => {
+    console.log(currentUser)
     try {
       setShowListingsError(false);
-      const res = await fetch(`https://realestate-xqt1.onrender.com/api/user/listings/${currentUser._id}`);
+      const res = await fetch(`http://localhost:3456/api/user/listings/${currentUser.email}`);
       const data = await res.json();
       if (data.success === false) {
         setShowListingsError(true);
@@ -144,7 +142,7 @@ export default function Profile() {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`https://realestate-xqt1.onrender.com/api/listing/delete/${listingId}`, {
+      const res = await fetch(`http://localhost:3456/api/listing/delete/${listingId}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -160,6 +158,7 @@ export default function Profile() {
       console.log(error.message);
     }
   };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -267,7 +266,7 @@ export default function Profile() {
                 />
               </Link>
               <Link
-                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                className='text-slate-700 font-semibold hover:underline truncate flex-1'
                 to={`/listing/${listing._id}`}
               >
                 <p>{listing.name}</p>

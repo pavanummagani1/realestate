@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
+const BASE_API = import.meta.env.VITE_BASE_API;
+
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function OAuth() {
 
       const result = await signInWithPopup(auth, provider);
 
-      const res = await fetch('https://realestate-xqt1.onrender.com/api/auth/google', {
+      const res = await fetch(`http://localhost:3456/api/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

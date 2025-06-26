@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const BASE_API = import.meta.env.VITE_BASE_API;
+
 export default function Contact({ listing }) {
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState('');
@@ -12,8 +14,8 @@ export default function Contact({ listing }) {
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(`https://realestate-xqt1.onrender.com/api/user/${listing.userRef}`, {
-          credentials: 'include', // ✅ in case auth cookie is needed
+        const res = await fetch(`http://localhost:3456/api/user/${listing.userRef}`, {
+          credentials: 'include', // Include credentials if needed
         });
         if (!res.ok) throw new Error('Failed to fetch landlord');
         const data = await res.json();

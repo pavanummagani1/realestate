@@ -8,22 +8,26 @@ import {
 } from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
 
+const BASE_API = import.meta.env.VITE_BASE_API;
+
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch('https://realestate-xqt1.onrender.com/api/auth/signin', {
+      const res = await fetch(`http://localhost:3456/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +36,6 @@ export default function SignIn() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;
@@ -44,6 +47,7 @@ export default function SignIn() {
       dispatch(signInFailure(error.message));
     }
   };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
@@ -69,11 +73,11 @@ export default function SignIn() {
         >
           {loading ? 'Loading...' : 'Sign In'}
         </button>
-        <OAuth/>
+        <OAuth />
       </form>
       <div className='flex gap-2 mt-5'>
-        <p>Dont have an account?</p>
-        <Link to={'/sign-up'}>
+        <p>Don’t have an account?</p>
+        <Link to='/sign-up'>
           <span className='text-blue-700'>Sign up</span>
         </Link>
       </div>
