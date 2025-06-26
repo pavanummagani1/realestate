@@ -4,8 +4,8 @@ import { verifyToken } from '../utils/verifyUser.js';
 
 const listingRouter = express.Router();
 
-listingRouter.post('/create', verifyToken, createListing);
-listingRouter.delete('/delete/:id',verifyToken, deleteListing);
+listingRouter.post('/create',  createListing);
+listingRouter.delete('/delete/:id', deleteListing);
 listingRouter.post('/update/:id',  updateListing);
 listingRouter.get('/get/:id', getListing);
 listingRouter.get('/get', getListings);
