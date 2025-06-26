@@ -27,12 +27,13 @@ export default function Listing() {
   const [contact, setContact] = useState(false);
   const params = useParams();
   const { currentUser } = useSelector((state) => state.user);
+  console.log(listing)
 
   useEffect(() => {
     const fetchListing = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`https://realestate-xqt1.onrender.com/api/listing/get/${params.listingId}`);
+        const res = await fetch(`http://localhost:3456/api/listing/get/${params.listingId}`);
         const data = await res.json();
         if (data.success === false) {
           setError(true);
@@ -137,12 +138,12 @@ export default function Listing() {
               </li>
             </ul>
             {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button
-                onClick={() => setContact(true)}
-                className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'
+              <a
+                href={`mailto:${listing.email}?subject=Regarding ${encodeURIComponent(listing.name.trim())} (${listing.type === 'rent' ? 'For Rent' : 'For Sale'})&body=Hello,%0D%0A%0D%0AI'm interested in your property: ${encodeURIComponent(listing.name.trim())}%0D%0A%0D%0AAddress: ${encodeURIComponent(listing.address.trim())}%0D%0A%0D%0APrice: $${listing.offer ? listing.discountPrice.toLocaleString('en-US') : listing.regularPrice.toLocaleString('en-US')}${listing.type === 'rent' ? '/month' : ''}%0D%0A%0D%0ACould you please provide more details?%0D%0A%0D%0ARegards,%0D%0A[Your Name]`}
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
               >
-                Contact landlord
-              </button>
+                Contact Landlord
+              </a>
             )}
             {contact && <Contact listing={listing} />}
           </div>
